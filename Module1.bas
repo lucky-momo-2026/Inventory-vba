@@ -34,7 +34,6 @@ Sub RunInventoryChecK()
             msg = msg & wsStock.Cells(i, 1).Value & " は在庫切れです" & vbCrLf
         End If
         
-        
         '在庫状況の判断結果をD列に書き込む
         If stockText = 0 Then
             wsStock.Cells(i, 4).Value = "在庫切れ"  'D列に書く
@@ -43,6 +42,17 @@ Sub RunInventoryChecK()
         Else
             wsStock.Cells(i, 4).Value = "正常"  'D列に正常と書く
         End If
+        
+        '判定結果に応じて行の色を変える
+        If stockText = "0" Then
+            wsStock.Range(wsStock.Cells(i, 1), wsStock.Cells(i, 4)).Interior.Color = RGB(255, 199, 206)  '薄い赤
+        ElseIf Val(stockText) <= 5 Then
+            wsStock.Range(wsStock.Cells(i, 1), wsStock.Cells(i, 4)).Interior.Color = RGB(255, 235, 156)  '薄い黄
+        Else
+            wsStock.Range(wsStock.Cells(i, 1), wsStock.Cells(i, 4)).Interior.Color = xlNone
+            
+        End If
+        
         
         '在庫が少ないチェック（１～５）
         If Val(stockText) <= 5 And stockText <> "0" Then
