@@ -27,7 +27,19 @@ def save_stock_graph(out_of_stock_count, low_stock_count):
 
     #棒グラフを作成
     plt.figure(figsize=(6, 4))
-    plt.bar(labels, values)
+ 
+    bars = plt.bar(labels,values)  #棒グラフを作成して棒の情報を受け取る
+
+    #棒の上に件数を表示する
+    for bar in bars:
+        height = bar.get_height()  #棒の高さ（件数）を取得
+        plt.text(
+            bar.get_x() + bar.get_width() / 2,  #棒の中央値
+            height,  #棒の高さの位置
+            f"{int(height)}",  #表示する文字
+            ha="center",  #横方向は中央ぞろえ
+            va="bottom"  #縦方向は棒の上に置く
+        )
 
     #タイトルと軸ラベル
     plt.title("在庫状況の件数集計")
