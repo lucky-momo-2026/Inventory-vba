@@ -13,6 +13,8 @@ Sub RunInventoryChecK()
     Dim i As Long  'ループ用
     Dim stockText As String  '在庫（文字として扱う）
     Dim msg As String  '表示のメッセージをまとめる
+    Dim outOfStockCount As Long  '在庫切れ件数
+    Dim lowStocKCount As Long  '在所少件数
 
     'シート設定
     Set wsStock = ThisWorkbook.Worksheets("stock")
@@ -32,6 +34,7 @@ Sub RunInventoryChecK()
         '在庫切れチェック
         If stockText = "0" Then
             msg = msg & wsStock.Cells(i, 1).Value & " は在庫切れです" & vbCrLf
+            outOfStockCount = outOfStockCount + 1
         End If
         
         '在庫状況の判断結果をD列に書き込む
@@ -57,13 +60,17 @@ Sub RunInventoryChecK()
         '在庫が少ないチェック（１～５）
         If Val(stockText) <= 5 And stockText <> "0" Then
             msg = msg & wsStock.Cells(i, 1).Value & " は在庫が少ないです" & vbCrLf
+            lowStocKCount = lowStocKCount + 1
         End If
 
     Next i
 
 'ループの後に１回だけ表示
 If msg <> "" Then
-    MsgBox msg
+MsgBox msg & vbCrLf & _
+       "在庫切れ：" & outOfStockCount & "件" & vbCrLf & _
+       "在庫少：" & lowStocKCount & "件"
+    
 End If
 
 End Sub
