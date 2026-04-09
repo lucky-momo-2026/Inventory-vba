@@ -27,9 +27,10 @@ def save_stock_graph(out_of_stock_count, low_stock_count):
 
     #棒グラフを作成
     plt.figure(figsize=(12, 8))
- 
-    bars = plt.bar(labels,values)  #棒グラフを作成して棒の情報を受け取る
-    
+
+     #棒グラフを作成して棒の情報を受け取る
+    bars = plt.bar(labels, values, color=["red", "orange"])  #色指定
+
     plt.xticks(fontsize=14)  #横軸ラベルの文字を大きくする
 
     #棒の上に件数を表示する
