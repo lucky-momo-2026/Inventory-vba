@@ -31,7 +31,7 @@ def save_stock_graph(out_of_stock_count, low_stock_count):
 
     #タイトルと軸ラベル
     plt.title("在庫状況の件数集計")
-    plt.ylabel("件数")
+    plt.ylabel("件数", rotation=0, labelpad=20) #ratation横向き/labelpad左に離す
 
     # 画像として保存
     plt.savefig("inventory_graph.png")
