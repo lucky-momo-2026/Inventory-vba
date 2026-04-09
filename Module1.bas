@@ -79,7 +79,7 @@ Sub RunInventoryChecK()
             resultRow = wsResult.Cells(wsResult.Rows.Count, 1).End(xlUp).Row + 1
             wsResult.Cells(resultRow, 1).Value = wsStock.Cells(i, 1).Value 'è§ïiñº
             wsResult.Cells(resultRow, 2).Value = stockText  'ç›å…êî
-            wsResult.Cells(resultRow, 3).Value = "ç›å…êÿÇÍ"  'îªíË
+            wsResult.Cells(resultRow, 3).Value = "ç›å…è≠"  'îªíË
         End If
         
         
