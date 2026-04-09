@@ -32,7 +32,16 @@ Sub RunInventoryChecK()
         '在庫切れチェック
         If stockText = "0" Then
             msg = msg & wsStock.Cells(i, 1).Value & " は在庫切れです" & vbCrLf
+        End If
         
+        
+        '在庫状況の判断結果をD列に書き込む
+        If stockText = 0 Then
+            wsStock.Cells(i, 4).Value = "在庫切れ"  'D列に書く
+        ElseIf Val(stockText) <= 5 Then
+            wsStock.Cells(i, 4).Value = "在庫少"  'D列に在庫少と書く
+        Else
+            wsStock.Cells(i, 4).Value = "正常"  'D列に正常と書く
         End If
         
         '在庫が少ないチェック（１～５）
