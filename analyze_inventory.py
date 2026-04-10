@@ -26,8 +26,9 @@ def save_stock_graph(out_of_stock_count, low_stock_count):
     labels = ["在庫切れ", "在庫少"]
     values = [out_of_stock_count, low_stock_count]
 
-    #棒グラフを作成
-    plt.figure(figsize=(12, 8))
+    plt.figure(figsize=(12, 6), dpi=120)  #横に二つ並べるため横長にする
+
+    plt.subplot(1, 2, 1)  #１行２列の１つめ（左）
 
      #棒グラフを作成して棒の情報を受け取る
     bars = plt.bar(labels, values, color=["red", "orange"])  #色指定
@@ -50,27 +51,25 @@ def save_stock_graph(out_of_stock_count, low_stock_count):
     plt.title("在庫状況の件数集計", fontsize=18)
     plt.ylabel("件数", rotation=0, labelpad=20, fontsize=14) #ratation横向き/labelpad左に離す
 
-    # 画像として保存
-    plt.savefig("inventory_graph.png", dpi=300) #高画質で保存(dpi=300)
-
     #円グラフ用の件数データ
     sizes = [out_of_stock_count, low_stock_count]
 
-    #円グラフを作成
-    plt.figure(figsize=(8, 8), dpi=120)
+    plt.subplot(1, 2, 2)  #1行2列の2つ目（右）
 
     #円グラフを書く
     plt.pie(
         sizes,
         labels = ["在庫切れ", "在庫少"],  
         autopct = "%1.1f%%",  #割合を表示
-        startangle = 90  #上から始める
+        startangle = 90,  #上から始める
+        colors = ["red", "orange"]  #在庫切れ赤　在庫少オレンジ
     )
 
     plt.title("在庫の状況を割合")  #タイトル
     plt.axis("equal")  #円をきれいな丸にする
 
-    plt.savefig("inventory_pie_chart.png")  #画像として保存
+    plt.tight_layout()  #２つのグラフが重ならないように整える
+    plt.savefig("inventory_summary.png", dpi=300)  #合体グラフを一枚で保存
 
     plt.show()  #画面に表示
 
