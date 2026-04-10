@@ -1,3 +1,4 @@
+from numpy import size
 import pandas as pd
 import matplotlib.pyplot as plt #グラフを作る
 
@@ -51,6 +52,27 @@ def save_stock_graph(out_of_stock_count, low_stock_count):
 
     # 画像として保存
     plt.savefig("inventory_graph.png", dpi=300) #高画質で保存(dpi=300)
+
+    #円グラフ用の件数データ
+    sizes = [out_of_stock_count, low_stock_count]
+
+    #円グラフを作成
+    plt.figure(figsize=(8, 8), dpi=120)
+
+    #円グラフを書く
+    plt.pie(
+        sizes,
+        labels = ["在庫切れ", "在庫少"],  
+        autopct = "%1.1f%%",  #割合を表示
+        startangle = 90  #上から始める
+    )
+
+    plt.title("在庫の状況を割合")  #タイトル
+    plt.axis("equal")  #円をきれいな丸にする
+
+    plt.savefig("inventory_pie_chart.png")  #画像として保存
+
+    plt.show()  #画面に表示
 
     # メモリ節約のためグラフを閉じる
     plt.close()
