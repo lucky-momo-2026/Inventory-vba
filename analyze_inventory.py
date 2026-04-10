@@ -26,12 +26,15 @@ def save_stock_graph(out_of_stock_count, low_stock_count):
     labels = ["在庫切れ", "在庫少"]
     values = [out_of_stock_count, low_stock_count]
 
-    plt.figure(figsize=(12, 6), dpi=120)  #横に二つ並べるため横長にする
+    plt.figure(figsize=(10, 5), dpi=120)  #横に二つ並べるため横長にする
 
     plt.subplot(1, 2, 1)  #１行２列の１つめ（左）
 
      #棒グラフを作成して棒の情報を受け取る
     bars = plt.bar(labels, values, color=["red", "orange"])  #色指定
+
+    plt.ylim(0, max(values) + 1.5)  #上に余白を作る
+    plt.yticks(range(0, max(values) +1))
 
     plt.xticks(fontsize=14)  #横軸ラベルの文字を大きくする
 
@@ -40,7 +43,7 @@ def save_stock_graph(out_of_stock_count, low_stock_count):
         height = bar.get_height()  #棒の高さ（件数）を取得
         plt.text(
             bar.get_x() + bar.get_width() / 2,  #棒の中央値
-            height,  #棒の高さの位置
+            height + 0.05,  #棒の高さの位置
             f"{int(height)}",  #表示する文字
             ha="center",  #横方向は中央ぞろえ
             va="bottom",  #縦方向は棒の上に置く
@@ -48,8 +51,8 @@ def save_stock_graph(out_of_stock_count, low_stock_count):
         )
 
     #タイトルと軸ラベル
-    plt.title("在庫状況の件数集計", fontsize=18)
-    plt.ylabel("件数", rotation=0, labelpad=20, fontsize=14) #ratation横向き/labelpad左に離す
+    plt.title("在庫状況の件数集計", fontsize=16)
+    plt.ylabel("件", rotation=0, labelpad=20, fontsize=14) #ratation横向き/labelpad左に離す
 
     #円グラフ用の件数データ
     sizes = [out_of_stock_count, low_stock_count]
@@ -65,10 +68,12 @@ def save_stock_graph(out_of_stock_count, low_stock_count):
         colors = ["red", "orange"]  #在庫切れ赤　在庫少オレンジ
     )
 
-    plt.title("在庫の状況を割合")  #タイトル
+    plt.title("在庫の状況を割合", fontsize=16)  #タイトル
     plt.axis("equal")  #円をきれいな丸にする
 
-    plt.tight_layout()  #２つのグラフが重ならないように整える
+    plt.suptitle("在庫状況レポート", fontsize=20)
+
+    plt.tight_layout(rect=[0, 0, 1, 0.93])  #２つのグラフが重ならないように整える
     plt.savefig("inventory_summary.png", dpi=300)  #合体グラフを一枚で保存
 
     plt.show()  #画面に表示
