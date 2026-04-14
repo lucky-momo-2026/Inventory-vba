@@ -2,8 +2,19 @@ Attribute VB_Name = "Module1"
 Option Explicit
 
 ' ============================================
-' 在庫管理チェック処理
-' 在庫切れ（0）と在庫が少ない商品（5以下）を判定
+' resultシート上部に件数サマリーを表示する
+' 在庫切れ件数・在庫少件数を一覧の前に表示し、
+' 実行結果の全体像をすぐ確認できるようにする
+'
+' 【役割】
+' ① 在庫切れ件数を表示する
+' ② 在庫少件数を表示する
+' ③ 詳細一覧の前に集計結果を見せる
+'
+' 【実務上の目的】
+' ・結果を報告しやすくする
+' ・CSV保存前に件数確認をしやすくする
+' ・resultシートを簡易レポートとして使えるようにする
 ' ============================================
 
 Sub RunInventoryChecK()
@@ -37,19 +48,23 @@ Sub RunInventoryChecK()
     
     'resultシートを初期化する
     wsResult.Cells.Clear
-    
-    '見出しを入れる
-    wsResult.Cells(1, 1).Value = "商品名"
-    wsResult.Cells(1, 2).Value = "在庫数"
-    wsResult.Cells(1, 3).Value = "判定"
+        
+    'resultシートの一覧データは５行目から書き込む
+    resultRow = 5
 
+   'resultシート上部に件数欄を作る/1～2行目は件数表示用、4行目は一覧の見出しにする
+    wsResult.Cells(1, 1).Value = "在庫切れ件数"
+    wsResult.Cells(2, 1).Value = "在庫少件数"
     
+    wsResult.Cells(4, 1).Value = "商品名"
+    wsResult.Cells(4, 2).Value = "在庫数"
+    wsResult.Cells(4, 3).Value = "判定"
 
     msg = ""  'ループの前で初期化
 
     '２行目からループ
     For i = 2 To lastRow
-
+    
         'C列の在庫を余計な「空白なしの文字」にして取得
         stockText = Trim(CStr(wsStock.Cells(i, 3).Value))  'wsStock.Cells(i, 3).Value...i行目のC列の値（在庫）
                    'Trim(...)前後のスペースを削除/CStr(...)文字に変換
@@ -81,6 +96,8 @@ Sub RunInventoryChecK()
             wsStock.Cells(i, 4).Value = "正常"  'D列に正常と書く
         End If
         
+        
+        
         '在庫切れと在庫少の商品をresultシートに書き出す
         If stockText = "0" Then
             resultRow = wsResult.Cells(wsResult.Rows.Count, 1).End(xlUp).Row + 1
@@ -94,8 +111,6 @@ Sub RunInventoryChecK()
             wsResult.Cells(resultRow, 3).Value = "在庫少"  '判定
         End If
         
-        
-        
         '判定結果に応じて行の色を変える
         If stockText = "0" Then
             wsStock.Range(wsStock.Cells(i, 1), wsStock.Cells(i, 4)).Interior.Color = RGB(255, 199, 206)  '薄い赤
@@ -106,7 +121,6 @@ Sub RunInventoryChecK()
             
         End If
         
-        
         '在庫が少ないチェック（１～５）
         If stockValue <= 5 And stockText <> "0" Then
             msg = msg & wsStock.Cells(i, 1).Value & " は在庫が少ないです" & vbCrLf
@@ -114,6 +128,10 @@ Sub RunInventoryChecK()
         End If
 
     Next i
+    
+    'resultシート上部の件数サマリー欄に集計結果を書き込む/ループで数えた在庫切れ件数・在庫少件数を見える形で残す
+    wsResult.Cells(1, 2).Value = outOfStockCount
+    wsResult.Cells(2, 2).Value = lowStocKCount
 
 'ループの後に１回だけ表示
 If msg <> "" Then
