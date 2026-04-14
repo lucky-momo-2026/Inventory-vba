@@ -55,10 +55,15 @@ Sub RunInventoryChecK()
    'resultシート上部に件数欄を作る/1～2行目は件数表示用、4行目は一覧の見出しにする
     wsResult.Cells(1, 1).Value = "在庫切れ件数"
     wsResult.Cells(2, 1).Value = "在庫少件数"
+    '太文字にする
+    wsResult.Cells(1, 1).Font.Bold = True
+    wsResult.Cells(2, 1).Font.Bold = True
     
     wsResult.Cells(4, 1).Value = "商品名"
     wsResult.Cells(4, 2).Value = "在庫数"
     wsResult.Cells(4, 3).Value = "判定"
+    '太文字にする
+    wsResult.Range(wsResult.Cells(4, 1), wsResult.Cells(4, 3)).Font.Bold = True
 
     msg = ""  'ループの前で初期化
 
@@ -145,6 +150,24 @@ Dim csvPath As String
 
 '保存先（このExcelと同じフォルダ）
 csvPath = ThisWorkbook.Path & "\result.csv"
+
+' resultシートの列幅を自動調整する/すべてのデータが見切れないようにする
+wsResult.Columns("A:C").AutoFit
+
+' resultシートの表に罫線をつける/見出し～データまでを1つの表として見やすくする
+Dim lastResultRow As Long
+
+'A列の一番下から上に向かって最後にデータがある行を探す※最後の行にするのはデータ変動に対応するため
+lastResultRow = wsResult.Cells(wsResult.Rows.Count, 1).End(xlUp).Row
+
+'４行目から最後の行までA～C列に枠を付ける※最後の行にするのはデータ変動に対応するため
+wsResult.Range(wsResult.Cells(4, 1), wsResult.Cells(lastResultRow, 3)).Borders.LineStyle = xlContinuous
+
+'見出し行（4行目）に背景色をつけて視認性を上げる/表のタイトル行として分かりやすくする
+wsResult.Range(wsResult.Cells(4, 1), wsResult.Cells(4, 3)).Interior.Color = RGB(200, 200, 200)
+
+'見出し行（4行目）を中央揃えにする/列タイトルとして見やすく整える
+wsResult.Range(wsResult.Cells(4, 1), wsResult.Cells(4, 3)).HorizontalAlingnment = xlCenter
 
 'resultシートをコピーしてcsvで保存
 wsResult.Copy
