@@ -171,6 +171,16 @@ wsResult.Range(wsResult.Cells(4, 1), wsResult.Cells(4, 3)).HorizontalAlingnment 
 
 'resultシートをコピーしてcsvで保存
 wsResult.Copy
+
+'保存確認ダイアログを出さない
+Application.DisplayAlerts = False
+
+'今開いているブックをCSVとして保存する
 ActiveWorkbook.SaveAs Filename:=csvPath, FileFormat:=xlCSV
+'今開いているその一時Excelを閉じる
 ActiveWorkbook.Close False
+
+'元に戻す
+Application.DisplayAlerts = True
+
 End Sub
