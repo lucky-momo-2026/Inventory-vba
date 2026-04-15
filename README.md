@@ -37,12 +37,13 @@ VBAで在庫の状態（在庫切れ・在庫少・正常）を判定し、
 
 inventory-check/
 
+```
 ├── stock.xlsm
 ├── Module1.bas
 ├── analyze_inventory.py
 ├── result_sample.csv
 └── inventory_summary.png
-
+```
 ---
 
 ## 🚀 使い方
